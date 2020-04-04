@@ -1,4 +1,6 @@
-Library for the MCP23008 Remote 8-bit IO Expander
+Library for the INA233 16-bit Voltage/Current/Power/Energy monitor
+
+Requires: TwoWireDevice
 
 Working:
  - VBUS, shunt, current readout
