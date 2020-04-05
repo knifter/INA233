@@ -6,7 +6,8 @@
 
 #define INA233_ADDRESS_DEFAULT              (0x40)
 
-class INA233: public TwoWireDevice {
+class INA233: public TwoWireDevice 
+{
     public:    
 		typedef enum
 		{
@@ -79,14 +80,7 @@ class INA233: public TwoWireDevice {
 		void setR(float, Precision_t p = PREC_MA);		// Set Shunt Resistor value for getCurrentSWmA()
 		float getCurrentSWmA();				// Get Current (calc. from setR & READ_SHUNT)
 
-		// int16_t getPower();
-
-    protected:
-
     private:
-        INA233(const INA233&);
-        INA233& operator=(const INA233&);
-
 		uint8_t _device_config;
 		uint16_t _adc_config;
 		float _Rinv = 1 * 0.0025;

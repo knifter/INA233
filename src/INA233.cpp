@@ -8,35 +8,19 @@ bool INA233::begin()
 {
 	TwoWireDevice::begin();
 
-	Serial.printf("INA233: init..\n");
-
 	// Get DeviceID/Revision
 	uint8_t id[8];
 	readreg(REG_MFR_MODEL, id, 7);
 	id[7]=0x00;
 	if(id[0] != 0x06)
-	{
-		Serial.printf("Block read deviceid length is not 6 bytes.");
 		return false;
-	};
 	if(strncmp((char*)(id+1), "INA233", 6))
-	{
-		Serial.printf("ERROR: deviceid = 0x%02x 0x%02x 0x%02x 0x%02x 0x%02x 0x%02x\n", 
-			id[1], id[2], id[3], id[4], id[5], id[6]);
 		return false;
-	};
 
 	// set device and reg cache to defaults
-	Serial.printf("INA233: setDefaults()\n");
 	setDefaults();
 
-	if(_wire.lastError())
-	{
-		Serial.printf("INA233: lastError = %s\n", _wire.getErrorText(_wire.lastError()));
-		return false;
-	};
-	Serial.printf("INA233: done\n");
-	return true;
+	return _wire.lastError();
 };
 
 void INA233::clearFaults()
@@ -117,16 +101,6 @@ void INA233::setOperatingMode(OperatingMode_t mode)
 
 	writereg16_LM(REG_MFR_ADC_CONFIG, _adc_config);
 };
-
-// int16_t INA233::getPower()
-// {
-// 	return readreg16(REG_POWER);
-// }
-
-// int16_t INA233::getCurrent()
-// {
-// 	return readreg16(REG_CURRENT);
-// }
 
 void INA233::setCalibration(uint16_t cal)
 {
