@@ -13,6 +13,7 @@ bool INA233::begin()
 	uint8_t id[8];
 	readreg(REG_MFR_MODEL, id, 7);
 	id[7]=0x00;
+	// Serial.printf("ID %x '%s'", id[0], (char*)(id+1));
 	if(id[0] != 0x06)
 		return false;
 	if(strncmp((char*)(id+1), "INA233", 6))
@@ -21,7 +22,7 @@ bool INA233::begin()
 	// set device and reg cache to defaults
 	setDefaults();
 
-	return _wire.lastError();
+	return _wire.lastError() == 0;
 };
 
 void INA233::clearFaults()
@@ -32,7 +33,9 @@ void INA233::clearFaults()
 
 void INA233::setDefaults()
 {
+	Serial.printf("err1: %d\n", _wire.lastError());
 	writereg(REG_RESTORE_DEFAULT_ALL);
+	Serial.printf("err2: %d\n", _wire.lastError());
 	_device_config = MFR_DEVICE_CONFIG_DFLT;
 	_adc_config = MFR_ADC_CONFIG_DFLT;
 }
