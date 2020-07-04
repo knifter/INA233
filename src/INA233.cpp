@@ -6,7 +6,8 @@
 
 bool INA233::begin()
 {
-	TwoWireDevice::begin();
+	if(!TwoWireDevice::begin())
+		return false;
 
 	// Get DeviceID/Revision
 	uint8_t id[8];
